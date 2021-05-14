@@ -1,4 +1,4 @@
-This project attempt to optimise the intitial feed evaluator implementation by creating a new package from ground up without the use of a cumbersome pixellib library. 
+This project attempt to optimise the intitial feed evaluator implementation by creating a new package from ground up without the use of a cumbersome external image segmentation library.
 
 === 10/5/2021 ===
 Implementation has been overhauled. Adding assorted functions used to convert dataset from coco, find centroid, etc, as well as separation of preprocessor and model functions for easier code management
