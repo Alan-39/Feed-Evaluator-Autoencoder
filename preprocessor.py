@@ -11,6 +11,9 @@ Functions for loading and preprocessing images
 
 # loads single image numpy array
 def load_img_arr(img_path, img_size):
+    #img = cv2.imread(img_path)
+    #img = cv2.resize(img, img_size)
+    #img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     currimg = imageio.imread(img_path) 
     im = np.array(PIL.Image.fromarray(currimg).resize((img_size[0], img_size[1])))
     im = im[:, :, :3]

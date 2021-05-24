@@ -63,40 +63,19 @@ def segment_background(img_path, mask_path):
     cv2.waitKey(0)
 
 
-# segment background using grabcut algorithm
-def grabcut_segment(img_path, mask_path):
-    image = cv2.imread(img_path)
-    image = cv2.resize(image, (512, 512))
-    mask = cv2.imread(mask_path, cv2.IMREAD_GRAYSCALE)
-
-    mask[mask > 0] = cv2.GC_FGD
-    mask[mask == 254] = cv2.GC_BGD
-
-    bgModel = np.zeros((1,65),np.float64)
-    fgModel = np.zeros((1,65),np.float64)
-    mask, bgModel, fgModel = cv2.grabCut(image, mask, None, bgModel, fgModel, 4, cv2.GC_INIT_WITH_MASK)
-    
-    outputMask = np.where((mask == cv2.GC_BGD) | (mask == cv2.GC_PR_BGD), 0, 1)
-    outputMask = (outputMask * 255).astype("uint8")
-    output = cv2.bitwise_and(image, image, mask=outputMask)
-
-    cv2.imshow("Input Image", image)
-    cv2.imshow("GrabCut Output", output)
-    cv2.waitKey(0)
-
-
 def calc_whitepixels(filled_contour):
     height, width = filled_contour.shape[0], filled_contour.shape[1]
     img_mean = cv2.mean(filled_contour)[0]/255
 
     pixels = height * width
-    print("Total image pixels:", pixels)
+    #print("Total image pixels:", pixels)
 
     area = img_mean * pixels
-    print("white pixel filled:", area)
+    #print("white pixel filled:", area)
 
     percentage = area / pixels * 100
     print("percentage filled:", percentage)
+    return percentage
 
 
 def img_threshold(img):
@@ -106,7 +85,7 @@ def img_threshold(img):
 
 
 # converts coco json dataset into img and gt mask
-def cocojson_to_dataset(json_path):
+def labelmejson_to_dataset(json_path):
     json_paths = sorted(
         [
             os.path.join(json_path, fname)

@@ -136,7 +136,9 @@ def predict_image(model_path, img_path):
     model = load_model(model_path)
     model.summary()
     
-    img = load_img_arr(img_path, img_size)
+    img = cv2.imread(img_path)
+    img = cv2.resize(img, img_size)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
     fig, axs = plt.subplots(1, 5, figsize=(15, 4))
     plt.subplot(1, 4, 1)
@@ -171,12 +173,73 @@ def predict_image(model_path, img_path):
     end = time.time()
     print("runtime (in seconds): ", end - start)
 
-    cv2.imwrite("mask.jpg", filled_contour)
+    # saves plot as image
+    #plt.savefig('plot_figure.png')
 
-    plt.savefig('plot_figure.png')
     plt.show()
-    
 
+
+def segment_image():
+    """
+    Predicts and segment background from predicted mask output
+    """
+    print()
+
+
+def predict_video(model_path, video_path):
+    import time
+
+    model = load_model(model_path)
+    model.summary()
+
+    prev_frame_time = 0
+    new_frame_time = 0
+
+    cap = cv2.VideoCapture(video_path)
+
+    if (cap.isOpened()== False): 
+        print("Error opening video stream or file")
+
+    while cap.isOpened():
+        ret, frame = cap.read()
+        
+        if ret == True:
+            frame = cv2.resize(frame, img_size)
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+            X_test = np.reshape(frame, (-1, img_size[0], img_size[1], 3))
+            preds = model.predict(X_test)
+            pred = np.reshape(preds, (img_size[0], img_size[1]))
+
+            pred_uint8 = pred * 255
+            pred_uint8 = pred_uint8.astype(np.uint8)
+            bw = img_threshold(pred_uint8)
+
+            filled_contour = draw_filled_contour(bw, img_size)
+            feed_percentage = calc_whitepixels(filled_contour)
+
+            frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+            contour = draw_contour(bw, frame)
+
+            new_frame_time = time.time()
+            fps = 1 / (new_frame_time - prev_frame_time)
+            prev_frame_time = new_frame_time
+            fps = str(int(fps))
+            cv2.putText(contour, f"FPS: {fps}", (5, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 238, 0), 2, cv2.LINE_AA)
+            cv2.putText(contour, f"Feed % {math.ceil(feed_percentage)}", (5, 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 238, 0), 2, cv2.LINE_AA)
+
+            cv2.imshow('Video', contour)
+
+            # Press Q on keyboard to  exit
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+        else: 
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+# WIP, Not fully functional
 def predict_batch(model_path, img_path):
     import time
     start = time.time()
