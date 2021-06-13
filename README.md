@@ -1,16 +1,17 @@
 This project attempt to optimise the initial feed evaluator implementation by creating a new lightweight package from ground up without the use of a cumbersome external image segmentation library.
 <br>
-<br>
-Saved trained models<br>
-**model_1**<br>
+<h1>Saved trained models</h1>
+<h2>model_1</h2>
 epoch 100, batch_size = 4, optimizer='adadelta', autoencoder<br>
-**model_2**<br>
+<h2>model_2</h2>
 epoch 100, batch_size = 4, optimizer='adadelta', unet<br>
-**model_3** (current best model)<br>
+<h2>model_3 (current best)</h2>
 epoch 200, batch_size = 4, optimizer='adadelta', autoencoder<br>
-**model_4**<br>
+<h2>model_4</h2>
 epoch 200, batch_size = 4, optimizer='adadelta', unet<br>
 <br>
+
+<h1>Commands</h1>
 To see all commands
 ```
 py run.py -h
@@ -56,3 +57,9 @@ Show trained model history
 ```
 py run.py -sh "history_json_path"
 ```
+<br>
+<h2>Predict on single image example</h2>
+![alt text](/single_predict_example.jpg)
+<br>
+<h2>Predict on video example</h2>
+![alt text](/video_predict_example.jpg)
