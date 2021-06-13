@@ -57,9 +57,12 @@ Show trained model history
 ```
 py run.py -sh "history_json_path"
 ```
-<br>
+
 <h2>Predict on single image example</h2>
-![alt text](/single_predict_example.jpg)
-<br>
+<p align="center">
+  <img src="https://github.com/AlanSleeps/Feed-Evaluator-Autoencoder/blob/main/single_predict_example.jpg">
+</p>
 <h2>Predict on video example</h2>
-![alt text](/video_predict_example.jpg)
+<p align="center">
+  <img src="https://github.com/AlanSleeps/Feed-Evaluator-Autoencoder/blob/main/video_predict_example.jpg">
+</p>
