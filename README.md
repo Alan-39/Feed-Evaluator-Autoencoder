@@ -1,5 +1,3 @@
-This project attempt to optimise the initial feed evaluator implementation by creating a new lightweight package from ground up without the use of a cumbersome external image segmentation library.
-<br>
 <h1>Saved trained models</h1>
 <h2>model_1</h2>
 epoch 100, batch_size = 4, optimizer='adadelta', autoencoder<br>
